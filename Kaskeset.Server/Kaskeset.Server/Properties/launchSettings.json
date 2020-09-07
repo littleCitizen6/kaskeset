@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "Kaskeset.Server": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
