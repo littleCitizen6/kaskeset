@@ -6,8 +6,8 @@ namespace Kaskeset.Common.Requests
 {
     public enum RequestType
     {
-        Message,
-        Action
+        TextMessage,
+        ChatConnection
     }
     public class Request
     {

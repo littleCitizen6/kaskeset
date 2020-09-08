@@ -1,4 +1,5 @@
-﻿using Kaskeset.Server.RequestHandeling;
+﻿using Kaskeset.Server.ClientInfo;
+using Kaskeset.Server.RequestHandeling;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -10,11 +11,14 @@ namespace Kaskeset.Server.ClientsConnection
     public class TcpClientConnection : IClientConnection
     {
         private TcpClient _client;
-        private IRequestHandler _requestHandler;
-        public bool IsConnected => throw new NotImplementedException();
+        private IRequestHandlingManeger _requestHandler;
+        public bool IsConnected => _client.Connected;
 
-        public TcpClientConnection(TcpClient client, IRequestHandler requestHandler)
+        public IClientInfo Info { get; set; }
+
+        public TcpClientConnection(TcpClient client, IRequestHandlingManeger requestHandler)
         {
+            Info = new BasicClientInfo(); // todo: get as param
             _client = client;
             _requestHandler = requestHandler;
         }
@@ -28,23 +32,19 @@ namespace Kaskeset.Server.ClientsConnection
             return new Task(() =>
             {
                 Byte[] bytes = new Byte[256];
-                NetworkStream stream = _client.GetStream();
 
                 int bytesRec;
                 while (_requestHandler.Continue && IsConnected)
                 {
-                    bytesRec = stream.Read(bytes, 0, bytes.Length);
-                    if (bytesRec > 0)
-                    {
-                        stream.Write(_requestHandler.Handle(bytes, bytesRec));
-                    }
+                    bytesRec = _client.GetStream().Read(bytes, 0, bytes.Length);
+                    _requestHandler.Handle(bytes, bytesRec); // change requestHandler
                 }
             });
         }
 
         public void Send(string response)
         {
-            throw new NotImplementedException();
+            _client.GetStream().Write(Encoding.ASCII.GetBytes(response));
         }
     }
 }
