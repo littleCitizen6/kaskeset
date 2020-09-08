@@ -21,6 +21,7 @@ namespace Kaskeset.Server.ClientsConnection
             Info = new BasicClientInfo(); // todo: get as param
             _client = client;
             _requestHandler = requestHandler;
+            Send(Info.Id.ToString());
         }
         public void Dispose()
         {

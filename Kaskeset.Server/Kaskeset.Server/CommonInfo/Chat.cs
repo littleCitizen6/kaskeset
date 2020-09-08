@@ -30,9 +30,11 @@ namespace Kaskeset.Server.CommonInfo
             }
             _onWrite += History.Add;
         }
-        public void Write(string msg)
+        public void Write(string msg, IClientConnection client)
         {
+            _onWrite -= client.Send;
             _onWrite?.Invoke(msg);
+            _onWrite += client.Send;
         }
         public void Connect(IClientConnection client)
         {

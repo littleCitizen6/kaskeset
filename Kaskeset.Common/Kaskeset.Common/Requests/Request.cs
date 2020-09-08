@@ -6,17 +6,21 @@ namespace Kaskeset.Common.Requests
 {
     public enum RequestType
     {
-        Message,
-        Action
+        TextMessage,
+        ChatConnection,
+        UpdateName
     }
+    [Serializable()]
     public class Request
     {
         public Guid Id { get; set; }
         public RequestType Type { get; set; }
         public Dictionary<string, string> Properties { get; set; }
-        public Request()
+        public Request(RequestType type, Dictionary<string, string> prop)
         {
-            Properties = new Dictionary<string, string>();
+            Id = new Guid();
+            Properties = prop;
+            Type = type;
         }
     }
 }

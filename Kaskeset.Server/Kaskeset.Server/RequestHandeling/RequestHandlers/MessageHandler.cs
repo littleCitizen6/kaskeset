@@ -1,5 +1,6 @@
 ﻿using Kaskeset.Common.RequestInfo;
 using Kaskeset.Common.Requests;
+using Kaskeset.Server.ClientsConnection;
 using Kaskeset.Server.CommonInfo;
 using Kaskeset.Server.RequestHandeling.RequestHandlers;
 using System;
@@ -19,7 +20,7 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlers
         {
             MessageInfo message = new MessageInfo();
             message.LoadFromDictionary(request.Properties);
-            _stateInfo.Chats.ChatById[message.ChatId].Write(message.Value);
+            _stateInfo.Chats.ChatById[message.ChatId].Write(message.Value, _stateInfo.Pbx.Clients[message.ClientId]);
         }
     }
 }

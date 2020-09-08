@@ -6,7 +6,8 @@ namespace Kaskeset.Client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ClientRunner runner = new ClientRunner("10.1.0.14", 9000);
+            runner.Run();
         }
     }
 }

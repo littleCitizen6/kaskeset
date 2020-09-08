@@ -5,4 +5,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Kaskeset.Common">
+      <HintPath>..\..\Kaskeset.Common\Kaskeset.Common\bin\Debug\netcoreapp3.1\Kaskeset.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MenuBuilder">
+      <HintPath>..\OutSourceDll\MenuBuilder.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

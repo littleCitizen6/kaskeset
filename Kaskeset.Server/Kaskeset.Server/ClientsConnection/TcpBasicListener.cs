@@ -1,5 +1,6 @@
 ﻿using Kaskeset.Server.CommonInfo;
 using Kaskeset.Server.RequestHandeling;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,13 +12,15 @@ namespace Kaskeset.Server.ClientsConnection
 {
     public class TcpBasicListener
     {
+        private ILogger _logger;
         private IStateInfo _stateInfo;
         private IPAddress _ipAddress;
         private int _port;
         private IRequestHandlingManeger _requestHandler;
         private object _locker;
-        public TcpBasicListener(string address, int port, IStateInfo stateInfo,IRequestHandlingManeger requestHandler)
+        public TcpBasicListener(string address, int port, IStateInfo stateInfo,IRequestHandlingManeger requestHandler, ILogger logger)
         {
+            _logger = logger;
             _ipAddress = IPAddress.Parse(address);
             _port = port;
             _stateInfo = stateInfo;
@@ -32,9 +35,8 @@ namespace Kaskeset.Server.ClientsConnection
                 server.Start();
                 while (true)
                 {
-                    //Console.Write("Waiting for a connection... ");
                     TcpClient client = server.AcceptTcpClient();
-                    //Console.WriteLine("Connected!");
+                    _logger.LogInformation("a connection created");
                     Task Connect = new Task(() =>
                     {
                         Guid index;
