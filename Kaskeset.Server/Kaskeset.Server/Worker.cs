@@ -21,6 +21,7 @@ namespace Kaskeset.Server
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             BasicRunner runner = new BasicRunner("10.1.0.14", 9000, _logger);
+            runner.Run();
             /*while (!stoppingToken.IsCancellationRequested)
             {
                 

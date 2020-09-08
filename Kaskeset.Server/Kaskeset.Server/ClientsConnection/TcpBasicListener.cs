@@ -35,6 +35,7 @@ namespace Kaskeset.Server.ClientsConnection
                 server.Start();
                 while (true)
                 {
+                    _logger.LogInformation("wait for new connection");
                     TcpClient client = server.AcceptTcpClient();
                     _logger.LogInformation("a connection created");
                     Task Connect = new Task(() =>
@@ -42,7 +43,7 @@ namespace Kaskeset.Server.ClientsConnection
                         Guid index;
                         lock (_locker)
                         {
-                            var cl = new TcpClientConnection(client, _requestHandler);
+                            var cl = new TcpClientConnection(client, _requestHandler, _logger);
                             index = _stateInfo.Pbx.AddClient(cl);
                             _stateInfo.Chats.ChatById[0].AppendClient(cl); // add for global chat
                         }
@@ -55,7 +56,7 @@ namespace Kaskeset.Server.ClientsConnection
             }
             catch(Exception ex)
             {
-                //write log
+                _logger.LogError(ex.ToString());
             }
         }
     }

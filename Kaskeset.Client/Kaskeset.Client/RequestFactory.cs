@@ -11,7 +11,7 @@ namespace Kaskeset.Client
         private ClientInfo _info;
         public RequestFactory(ClientInfo clientInfo)
         {
-
+            _info = clientInfo;
         }
         public Request CreateUpdateNameRequest(string name)
         {

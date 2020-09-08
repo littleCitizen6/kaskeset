@@ -12,7 +12,7 @@ namespace Kaskeset.Server.ClientInfo
         public Guid Id => _id;
         public BasicClientInfo()
         {
-            _id = new Guid();
+            _id = Guid.NewGuid();
         }
     }
 }

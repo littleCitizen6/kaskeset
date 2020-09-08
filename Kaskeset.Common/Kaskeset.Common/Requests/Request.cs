@@ -18,7 +18,7 @@ namespace Kaskeset.Common.Requests
         public Dictionary<string, string> Properties { get; set; }
         public Request(RequestType type, Dictionary<string, string> prop)
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
             Properties = prop;
             Type = type;
         }

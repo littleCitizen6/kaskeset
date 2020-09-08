@@ -16,7 +16,7 @@ namespace Kaskeset.Client
         {
             IPAddress ipAddress = IPAddress.Parse(adress);
             var remoteEP = new IPEndPoint(ipAddress, 9000);
-            _client = new TcpClient(remoteEP);
+            _client = new TcpClient();
             _client.Connect(remoteEP);
         }
 

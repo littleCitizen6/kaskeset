@@ -1,5 +1,6 @@
 ﻿using Kaskeset.Server.ClientInfo;
 using Kaskeset.Server.RequestHandeling;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -10,17 +11,20 @@ namespace Kaskeset.Server.ClientsConnection
 {
     public class TcpClientConnection : IClientConnection
     {
+        private ILogger _logger;
         private TcpClient _client;
         private IRequestHandlingManeger _requestHandler;
         public bool IsConnected => _client.Connected;
 
         public IClientInfo Info { get; set; }
 
-        public TcpClientConnection(TcpClient client, IRequestHandlingManeger requestHandler)
+        public TcpClientConnection(TcpClient client, IRequestHandlingManeger requestHandler, ILogger logger)
         {
             Info = new BasicClientInfo(); // todo: get as param
             _client = client;
             _requestHandler = requestHandler;
+            _logger = logger;
+            _logger.LogInformation($"Sending Id {Info.Id}");
             Send(Info.Id.ToString());
         }
         public void Dispose()

@@ -20,6 +20,7 @@ namespace Kaskeset.Client
         }
         public void Run()
         {
+            Console.WriteLine("start");
             GetClientName();
             _menuHandler.Runner.Run(_headMenu);
         }
