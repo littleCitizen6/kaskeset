@@ -39,6 +39,7 @@ namespace Kaskeset.Server.ClientsConnection
                 bytesRec = _client.GetStream().Read(bytes, 0, bytes.Length);
                 _requestHandler.Handle(bytes, bytesRec); // change requestHandler
             }
+            _logger.LogInformation($"client left : {Info.Name}::{Info.Id}");
         }
 
         public void Send(string response)

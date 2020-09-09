@@ -63,7 +63,7 @@ namespace Kaskeset.Server.CommonInfo
         }
         public override string ToString()
         {
-            return $"{Id}:: {Name}";
+            return $"{Name}::{Id}";
         }
 
     }

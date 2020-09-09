@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Kaskeset.Server.CommonInfo
 {
-    public class Chats
+    public class Chats: IDisposable
     {
         private ILogger _logger;
         public ConcurrentDictionary<int, Chat> ChatById { get; set; }
@@ -27,6 +27,12 @@ namespace Kaskeset.Server.CommonInfo
         public IEnumerable<Chat> GetChats(IClientConnection client)
         {
             return ChatById.Values.Where(chat => chat.Clients.Exists(cl => cl.Info.Id == client.Info.Id));
+        }
+
+        public void Dispose()
+        {
+            ChatById.Values.ToList().ForEach(ch => ch.Dispose());
+            _logger.LogInformation("all chats disposed");
         }
     }
 }
