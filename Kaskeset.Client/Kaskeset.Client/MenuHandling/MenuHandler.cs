@@ -36,6 +36,15 @@ namespace Kaskeset.Client.MenuHandling
             }
             return menu;
         }
+        public static IMenu CreateStringsMenu(List<Option<string>> options)
+        {
+            var menu = new StringMenu();
+            foreach (var option in options)
+            {
+                menu.AddAction(option.Key.ToString(), option.Func, option.Description);
+            }
+            return menu;
+        }
         public IMenu CreateStringsFunctionMenu(IEnumerable<string> keys, Func<string, string> func)
         {
             var menu = new StringMenu();

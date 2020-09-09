@@ -16,7 +16,7 @@ namespace Kaskeset.Client
             ClientInfo info = new ClientInfo();
             _controller = new ClientController(new Server(new TcpClientHandler(adress,port), info),info ,new ConsoleDisplayer());
             _menuHandler = new MenuHandler();
-            _headMenu = MenuHandler.CreateNumberMenu(GetHeadMenuOptions());
+            _headMenu = MenuHandler.CreateStringsMenu(GetHeadMenuOptions());
             InitMenus();
         }
         public void Run()
@@ -36,14 +36,14 @@ namespace Kaskeset.Client
         private void InitMenus()
         {
             _menuHandler.Runner.AddMenu("head", _headMenu);
-            //_menuHandler.Runner.AddMenu("1", _headMenu);
+            _menuHandler.Runner.AddMenu("private", _menuHandler.CreateStringsFunctionMenu(_controller.GetAllClients(),_controller.ChoosePrivateChat));
             //_menuHandler.Runner.AddMenu("2", _headMenu);
         }
-        private List<Option<int>> GetHeadMenuOptions()
+        private List<Option<string>> GetHeadMenuOptions()
         {
-            var mainActions = new List<Option<int>>();
-            mainActions.Add(new Option<int>(1, _controller.InsertGlobalChat, "for global chat"));
-            //mainActions.Add(new Option<int>(1, _menuHandler.MoveToOtherMenu, "for choose a chat"));
+            var mainActions = new List<Option<string>>();
+            mainActions.Add(new Option<string>("global", _controller.InsertGlobalChat, "for global chat"));
+            mainActions.Add(new Option<string>("private", _menuHandler.MoveToOtherMenu, "for choose a private chat"));
             //mainActions.Add(new Option<int>(2, _controller.GetCurrentAuctions, "for look at the auction that preforming right now"));
 
             return mainActions;
