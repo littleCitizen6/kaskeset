@@ -1,14 +1,11 @@
 ﻿using Kaskeset.Common.Requests;
 using Kaskeset.Server.CommonInfo;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Kaskeset.Server.RequestHandeling
+namespace Kaskeset.Server.RequestHandeling.RequestHandlingManegment
 {
     public class BasicRequestHandlingManeger : IRequestHandlingManeger
     {
@@ -21,10 +18,10 @@ namespace Kaskeset.Server.RequestHandeling
         {
             _continue = true;
             _stateInfo = stateInfo;
-            _factory = new RequestHandlerFactory(_stateInfo);
+            _factory = new RequestHandlerFactory(_stateInfo, logger);
             _logger = logger;
         }
-        public void Handle(byte[] msg, int bytesRec)
+        public void Handle(byte[] msg, int bytesRec) // check if need a lock
         {
             Request request;
             using (var memStream = new MemoryStream(msg))

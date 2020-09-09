@@ -1,4 +1,5 @@
 ﻿using Kaskeset.Server.ClientsConnection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace Kaskeset.Server.CommonInfo
     public class Chat : IDisposable
     {
         private static int idGenrate = 0;
+        private ILogger _logger;
         public List<IClientConnection> Clients { get; set; }
         public List<IClientConnection> Connected { get; set; }
         public List<string> History { get; set; }
@@ -16,8 +18,9 @@ namespace Kaskeset.Server.CommonInfo
         private object _locker;
         public int Id { get;}
         public string Name { get; set; }
-        public Chat(string name)
+        public Chat(string name, ILogger logger)
         {
+            _logger = logger;
             Name = name;
             _locker = new object();
             History = new List<string>();
@@ -28,20 +31,24 @@ namespace Kaskeset.Server.CommonInfo
                 Id = idGenrate;
                 Interlocked.Increment(ref idGenrate);
             }
+            _logger.LogInformation($"chat created with name {name}, and id: {Id}");
             _onWrite += History.Add;
         }
         public void Write(string msg, IClientConnection client)
         {
+            _logger.LogInformation($"recived meesage, in chat {Id}, from client {client.Info.Id}, with value {msg}");
             _onWrite -= client.Send;
             _onWrite?.Invoke(msg);
             _onWrite += client.Send;
         }
         public void Connect(IClientConnection client)
         {
+            _logger.LogInformation($"client has connected for {Name}::{Id} - {client.Info.Name}::{client.Info.Id}");
             _onWrite += client.Send;
         }
         public void Disconnect(IClientConnection client)
         {
+            _logger.LogInformation($"client has disconnected - {client.Info.Name}::{client.Info.Id}");
             _onWrite -= client.Send;
         }
 

@@ -15,8 +15,8 @@ namespace Kaskeset.Common.RequestInfo
         {
             Dictionary<string, string> prop = new Dictionary<string, string>();
             prop.Add("ChatId", ChatId.ToString());
-            prop.Add("Value", ChatId.ToString());
-            prop.Add("ClientId", ChatId.ToString());
+            prop.Add("Value", Value.ToString());
+            prop.Add("ClientId", ClientId.ToString());
             return prop;
         }
         public void LoadFromDictionary(Dictionary<string, string> properties)

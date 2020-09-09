@@ -1,11 +1,9 @@
 ﻿using Kaskeset.Server.ClientInfo;
-using Kaskeset.Server.RequestHandeling;
+using Kaskeset.Server.RequestHandeling.RequestHandlingManegment;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Kaskeset.Server.ClientsConnection
 {
@@ -38,9 +36,7 @@ namespace Kaskeset.Server.ClientsConnection
             int bytesRec;
             while (_requestHandler.Continue && IsConnected)
             {
-                _logger.LogInformation($"wait for bytes from client {Info.Id}");
                 bytesRec = _client.GetStream().Read(bytes, 0, bytes.Length);
-                _logger.LogInformation($"stream of bytes accepted, from client {Info.Id}");
                 _requestHandler.Handle(bytes, bytesRec); // change requestHandler
             }
         }

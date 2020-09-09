@@ -4,19 +4,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 
 namespace Kaskeset.Server.CommonInfo
 {
     public class Chats
     {
+        private ILogger _logger;
         public ConcurrentDictionary<int, Chat> ChatById { get; set; }
-        public Chats()
+        public Chats(ILogger logger)
         {
+            _logger = logger;
             ChatById = new ConcurrentDictionary<int, Chat>();
-            CreateChat(new Chat("global"));
+            CreateChat("global");
         }
-        public void CreateChat(Chat chat)
+        public void CreateChat(string name)
         {
+            var chat = new Chat(name, _logger);
             ChatById.TryAdd(chat.Id, chat);
         }
 

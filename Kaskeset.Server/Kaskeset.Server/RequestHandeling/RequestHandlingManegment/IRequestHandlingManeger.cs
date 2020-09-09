@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kaskeset.Server.RequestHandeling
+﻿namespace Kaskeset.Server.RequestHandeling.RequestHandlingManegment
 {
     public interface IRequestHandlingManeger
     {
