@@ -7,6 +7,8 @@ namespace Kaskeset.Client
     public class ClientInfo
     {
         public Guid ClientId { get; set; }
-        public List<int> ChatId { get; set; }
+        public int GlobalChatId { get; set; }
+        public Dictionary<Guid, int> PrivateChats { get; set; }
+
     }
 }

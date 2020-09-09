@@ -36,5 +36,13 @@ namespace Kaskeset.Client
             chatConnection.ToConnect = toConnect;
             return new Request(RequestType.ChatConnection, chatConnection.ToDictionary());
         }
+        public Request CreateCreateChatRequest(string name, List<Guid> participentsId)
+        {
+            CreateChatInfo createChatInfo = new CreateChatInfo();
+            createChatInfo.ClientId = _info.ClientId;
+            createChatInfo.Name = name;
+            createChatInfo.ParticipentsId = participentsId;
+            return new Request(RequestType.CreateChat, createChatInfo.ToDictionary());
+        }
     }
 }

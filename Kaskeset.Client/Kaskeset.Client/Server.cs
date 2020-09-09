@@ -39,8 +39,10 @@ namespace Kaskeset.Client
                 displayer.Display(_tcpServer.Recive());
             }
         }
-
-
-
+        public Guid CreateChat(string name, List<Guid> participentsId)
+        {
+            _tcpServer.Send(_factory.CreateCreateChatRequest(name, participentsId));
+            return Guid.Parse(_tcpServer.Recive());
+        }
     }
 }
