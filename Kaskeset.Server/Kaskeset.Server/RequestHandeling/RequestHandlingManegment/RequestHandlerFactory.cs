@@ -25,6 +25,8 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlingManegment
                     return new ChatConnectionHandler(_stateInfo);
                 case RequestType.UpdateName:
                     return new UpdateNameHandler(_stateInfo);
+                case RequestType.CreateChat:
+                    return new CreateChatHandler(_stateInfo);
                 default:
                     throw new NotImplementedException("request type does not supported");
             }

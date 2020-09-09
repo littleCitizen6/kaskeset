@@ -10,6 +10,7 @@ namespace Kaskeset.Common.RequestInfo
     {
         public List<Guid> ParticipentsId { get; set; }
         public Guid ClientId { get; set; }
+        public string Name { get; set; }
 
         public CreateChatInfo()
         {
@@ -19,6 +20,7 @@ namespace Kaskeset.Common.RequestInfo
         {
             ClientId = Guid.Parse(properties["ClientId"]);
             ParticipentsId = properties["Participents"].Split('|').ToList().ConvertListType<Guid>(); // check if good
+            Name = properties["Name"];
         }
 
         public Dictionary<string, string> ToDictionary()
@@ -26,6 +28,7 @@ namespace Kaskeset.Common.RequestInfo
             Dictionary<string, string> prop = new Dictionary<string, string>();
             prop.Add("Participents", ParticipentsId.ToSeperateByVerticalString<Guid>());
             prop.Add("ClientId", ClientId.ToString());
+            prop.Add("Name", Name);
             return prop;
         }
     }

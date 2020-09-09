@@ -18,10 +18,11 @@ namespace Kaskeset.Server.CommonInfo
             ChatById = new ConcurrentDictionary<int, Chat>();
             CreateChat("global");
         }
-        public void CreateChat(string name)
+        public int CreateChat(string name)
         {
             var chat = new Chat(name, _logger);
             ChatById.TryAdd(chat.Id, chat);
+            return chat.Id;
         }
 
         public IEnumerable<Chat> GetChats(IClientConnection client)
