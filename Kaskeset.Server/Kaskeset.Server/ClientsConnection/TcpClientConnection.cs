@@ -2,6 +2,7 @@
 using Kaskeset.Server.RequestHandeling.RequestHandlingManegment;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
@@ -18,7 +19,7 @@ namespace Kaskeset.Server.ClientsConnection
 
         public TcpClientConnection(TcpClient client, IRequestHandlingManeger requestHandler, ILogger logger)
         {
-            Info = new BasicClientInfo(); // todo: get as param
+            Info = new BasicClientInfo(); 
             _client = client;
             _requestHandler = requestHandler;
             _logger = logger;
@@ -36,10 +37,20 @@ namespace Kaskeset.Server.ClientsConnection
             int bytesRec;
             while (_requestHandler.Continue && IsConnected)
             {
-                bytesRec = _client.GetStream().Read(bytes, 0, bytes.Length);
-                _requestHandler.Handle(bytes, bytesRec); // change requestHandler
+                try
+                {
+                    bytesRec = _client.GetStream().Read(bytes, 0, bytes.Length);
+                    _requestHandler.Handle(bytes, bytesRec);
+                }
+                catch (IOException)
+                {
+                    _logger.LogInformation($"client left : {Info.Name}::{Info.Id}");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError($"exception :{e}");
+                }
             }
-            _logger.LogInformation($"client left : {Info.Name}::{Info.Id}");
         }
 
         public void Send(string response)
