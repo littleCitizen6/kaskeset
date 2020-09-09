@@ -28,6 +28,8 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlingManegment
                 case RequestType.CreateChat:
                     return new CreateChatHandler(_stateInfo);
                 default:
+                case RequestType.GetAllClients:
+                    return new GetAllClientsHandler(_stateInfo);
                     throw new NotImplementedException("request type does not supported");
             }
         }

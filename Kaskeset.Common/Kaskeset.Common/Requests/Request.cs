@@ -9,7 +9,8 @@ namespace Kaskeset.Common.Requests
         TextMessage,
         ChatConnection,
         UpdateName,
-        CreateChat
+        CreateChat,
+        GetAllClients
     }
     [Serializable()]
     public class Request
