@@ -12,5 +12,9 @@ namespace Kaskeset.Server.ClientInfo
         {
             _id = Guid.NewGuid();
         }
+        public override string ToString()
+        {
+            return $"{Name}::{Id}";
+        }
     }
 }

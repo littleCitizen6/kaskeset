@@ -22,8 +22,8 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlers
             {
                 int count = _stateInfo.Pbx.Clients.Values.Count(cl => cl.IsConnected && cl.Info.Id != requestInfo.ClientId);
                 _stateInfo.Pbx.Clients[requestInfo.ClientId].Send(count.ToString()); // first send how many there is to read
-                _stateInfo.Pbx.Clients.Keys.Where(clientId => _stateInfo.Pbx.Clients[clientId].IsConnected && clientId != requestInfo.ClientId)
-                    .ToList().ForEach(id => _stateInfo.Pbx.Clients[requestInfo.ClientId].Send(id.ToString()));   // send all active clients except the client sent the request
+                _stateInfo.Pbx.Clients.Values.Where(client => client.IsConnected && client.Info.Id != requestInfo.ClientId)
+                    .ToList().ForEach(client => _stateInfo.Pbx.Clients[requestInfo.ClientId].Send($"{client.Info}"));   // send all active clients except the client sent the request
             }
         }
     }

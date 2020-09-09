@@ -44,5 +44,11 @@ namespace Kaskeset.Client
             createChatInfo.ParticipentsId = participentsId;
             return new Request(RequestType.CreateChat, createChatInfo.ToDictionary());
         }
+        public Request CreateGetAllClientsRequest()
+        {
+            GetAllClientsInfo getAllClientsInfo = new GetAllClientsInfo();
+            getAllClientsInfo.ClientId = _info.ClientId;
+            return new Request(RequestType.GetAllClients, getAllClientsInfo.ToDictionary());
+        }
     }
 }

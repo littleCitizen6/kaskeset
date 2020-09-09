@@ -44,5 +44,16 @@ namespace Kaskeset.Client
             _tcpServer.Send(_factory.CreateCreateChatRequest(name, participentsId));
             return Guid.Parse(_tcpServer.Recive());
         }
+        public List<string> GetAllClients()
+        {
+            _tcpServer.Send(_factory.CreateGetAllClientsRequest());
+            List<string> clients = new List<string>();
+            int count = int.Parse(_tcpServer.Recive()); // send first the count
+            for (int i = 0; i < count; i++)
+            {
+                clients.Add(_tcpServer.Recive());
+            }
+            return clients;
+        }
     }
 }
