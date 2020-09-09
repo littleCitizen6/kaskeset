@@ -1,5 +1,6 @@
 ﻿using Kaskeset.Client.MenuHandling;
 using MenuBuilder.Abstraction;
+using MenuBuilder.Menus;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,17 +34,20 @@ namespace Kaskeset.Client
             
         }
 
+        public string MoveToClientsMenu(string userKey)
+        {
+            return _menuHandler.MoveToDynamicMenu("private", _controller.GetAllClients(), _controller.ChoosePrivateChat);
+        }
         private void InitMenus()
         {
             _menuHandler.Runner.AddMenu("head", _headMenu);
-            _menuHandler.Runner.AddMenu("private", _menuHandler.CreateStringsFunctionMenu(_controller.GetAllClients(),_controller.ChoosePrivateChat));
             //_menuHandler.Runner.AddMenu("2", _headMenu);
         }
         private List<Option<string>> GetHeadMenuOptions()
         {
             var mainActions = new List<Option<string>>();
             mainActions.Add(new Option<string>("global", _controller.InsertGlobalChat, "for global chat"));
-            mainActions.Add(new Option<string>("private", _menuHandler.MoveToOtherMenu, "for choose a private chat"));
+            mainActions.Add(new Option<string>("private", MoveToClientsMenu, "for choose a private chat"));
             //mainActions.Add(new Option<int>(2, _controller.GetCurrentAuctions, "for look at the auction that preforming right now"));
 
             return mainActions;

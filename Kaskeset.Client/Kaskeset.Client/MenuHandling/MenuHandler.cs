@@ -55,11 +55,19 @@ namespace Kaskeset.Client.MenuHandling
             menu.AddAction("back", GetPrevious, "back to previous menu");
             return menu;
         }
-
         public string MoveToOtherMenu(string index)
         {
             Runner.Browser.Current = Runner.Menus[index];
             return "succeded";
+        }
+        public string MoveToDynamicMenu(string index,List<string> options, Func<string, string> func)
+        {
+            if (!Runner.AddMenu(index, new StringMenu()))
+            {
+                Runner.Menus[index] = new StringMenu();
+            }
+            options.ForEach(option => Runner.Menus[index].AddAction(option, func, option));
+            return MoveToOtherMenu(index);
         }
 
         public string GetPrevious(string userParam)

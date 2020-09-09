@@ -39,7 +39,8 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlers
 
         private void HandlePrivateChat(CreateChatInfo requestInfo)
         {
-            var chat = _stateInfo.Chats.ChatById.Values.ToList().FirstOrDefault(chat =>                 //validate if exist by participents in privates chat
+            var chat = _stateInfo.Chats.ChatById.Values.ToList().FirstOrDefault(chat =>     //validate if exist by participents in privates chat
+                     chat.Name != "private" &&                       
                      chat.Clients.Exists(client => client.Info.Id == requestInfo.ParticipentsId[0]) &&
                      chat.Clients.Exists(client2 => client2.Info.Id == requestInfo.ParticipentsId[1]));
             bool chatExist = chat != null; 
