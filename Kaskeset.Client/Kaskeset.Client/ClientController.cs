@@ -11,31 +11,57 @@ namespace Kaskeset.Client
     {
         private IDisplayer _displayer;
         public Server Server { get; set; }
-        public ClientController(Server server, IDisplayer displayer)
+        private ClientInfo _info;
+        public ClientController(Server server, ClientInfo info, IDisplayer displayer)
         {
+            _info = info;
             Server = server;
             _displayer = displayer;
         }
 
         public string InsertGlobalChat(string userKey)
         {
-            _displayer.DisplayOnly("welcome to global chat");
+            InsertChat(_info.GlobalChatId, "global");
+            return "exit succesfully";
+        }
+        public List<string> GetAllClients()
+        {
+            return Server.GetAllClients();
+        }
+
+        public string ChoosePrivateChat(string userKey)
+        {
+            string[] clientInfo = userKey.Split("::"); //because server send in name::Id format
+            var name = clientInfo[0];
+            var id = Guid.Parse(clientInfo[1]); 
+            if (_info.PrivateChats.ContainsKey(id))
+            {
+                InsertChat(_info.PrivateChats[id], name);
+            }
+            else
+            {
+                _info.PrivateChats.TryAdd(id,Server.CreateChat("private", new List<Guid> { id, _info.ClientId })); 
+                InsertChat(_info.PrivateChats[id], name);
+            }
+            return "exit succesfully"; //because happend only when client exited from the chat
+        }
+
+        private void InsertChat(int chatId, string representingName)
+        {
+            _displayer.DisplayOnly($"welcome to {representingName} chat");
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Server.ConnectChat(0, true);
+            Server.ConnectChat(chatId, true);
             Task.Run(() => Server.DisplayMessagesAsync(_displayer), token);
-            string msg = Console.ReadLine(); // change to param getter ;
+            string msg = Console.ReadLine(); // change to param getter 
             while (msg != "exit")
             {
-                Server.SendMessage(msg, 0);
+                Server.SendMessage(msg, chatId);
                 msg = Console.ReadLine(); // change to param getter 
             }
             tokenSource.Cancel();
-            Server.ConnectChat(0, false);
-            return "exit succesfully";
+            Server.ConnectChat(chatId, false);
         }
-
-
 
     }
 }

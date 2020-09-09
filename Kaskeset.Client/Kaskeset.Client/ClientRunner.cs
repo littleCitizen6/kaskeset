@@ -13,7 +13,8 @@ namespace Kaskeset.Client
         IMenu _headMenu;
         public ClientRunner(string adress, int port)
         {
-            _controller = new ClientController(new Server(new TcpClientHandler(adress,port)),new ConsoleDisplayer());
+            ClientInfo info = new ClientInfo();
+            _controller = new ClientController(new Server(new TcpClientHandler(adress,port), info),info ,new ConsoleDisplayer());
             _menuHandler = new MenuHandler();
             _headMenu = MenuHandler.CreateNumberMenu(GetHeadMenuOptions());
             InitMenus();

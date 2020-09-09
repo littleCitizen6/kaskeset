@@ -12,9 +12,9 @@ namespace Kaskeset.Client
         private ClientInfo _info;
         private TcpClientHandler _tcpServer;
         private RequestFactory _factory;
-        public Server(TcpClientHandler tcpServer)
+        public Server(TcpClientHandler tcpServer, ClientInfo info)
         {
-            _info = new ClientInfo();
+            _info = info;
             _tcpServer = tcpServer;
             _factory = new RequestFactory(_info);
             _info.ClientId = Guid.Parse(_tcpServer.Recive()); // the server send the client id when start connection
@@ -39,10 +39,10 @@ namespace Kaskeset.Client
                 displayer.Display(_tcpServer.Recive());
             }
         }
-        public Guid CreateChat(string name, List<Guid> participentsId)
+        public int CreateChat(string name, List<Guid> participentsId)
         {
             _tcpServer.Send(_factory.CreateCreateChatRequest(name, participentsId));
-            return Guid.Parse(_tcpServer.Recive());
+            return int.Parse(_tcpServer.Recive());
         }
         public List<string> GetAllClients()
         {
