@@ -29,9 +29,10 @@ namespace Kaskeset.Server.RequestHandeling
             Request request;
             using (var memStream = new MemoryStream(msg))
             {
+                memStream.Position = 0;
                 var binForm = new BinaryFormatter();
-                memStream.Read(msg, 0, bytesRec);
                 request = (Request) binForm.Deserialize(memStream);
+                _logger.LogInformation($"an request has accepted: {request.Type}");
             }
             Task handle = new Task(() => _factory.Generate(request).Handle(request));
             handle.Start();

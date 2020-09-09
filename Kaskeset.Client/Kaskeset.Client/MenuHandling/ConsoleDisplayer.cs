@@ -10,5 +10,11 @@ namespace Kaskeset.Client.MenuHandling
         {
             Console.WriteLine(msg); ;
         }
+
+        public void DisplayOnly(string msg)
+        {
+            Console.Clear();
+            Console.WriteLine(msg);
+        }
     }
 }

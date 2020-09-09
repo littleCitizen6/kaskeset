@@ -32,19 +32,17 @@ namespace Kaskeset.Server.ClientsConnection
             _client.Dispose();
         }
 
-        public Task Run()
+        public void Run()
         {
-            return new Task(() =>
+            Byte[] bytes = new Byte[_client.ReceiveBufferSize];
+            int bytesRec;
+            while (_requestHandler.Continue && IsConnected)
             {
-                Byte[] bytes = new Byte[256];
-
-                int bytesRec;
-                while (_requestHandler.Continue && IsConnected)
-                {
-                    bytesRec = _client.GetStream().Read(bytes, 0, bytes.Length);
-                    _requestHandler.Handle(bytes, bytesRec); // change requestHandler
-                }
-            });
+                _logger.LogInformation($"wait for bytes from client {Info.Id}");
+                bytesRec = _client.GetStream().Read(bytes, 0, bytes.Length);
+                _logger.LogInformation($"stream of bytes accepted, from client {Info.Id}");
+                _requestHandler.Handle(bytes, bytesRec); // change requestHandler
+            }
         }
 
         public void Send(string response)

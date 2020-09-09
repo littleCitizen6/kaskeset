@@ -19,6 +19,7 @@ namespace Kaskeset.Client
 
         public string InsertGlobalChat(string userKey)
         {
+            _displayer.DisplayOnly("welcome to global chat");
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
             Server.ConnectChat(0, true);

@@ -11,7 +11,7 @@ namespace Kaskeset.Server.ClientsConnection
     {
         IClientInfo Info { get; set; }
         bool IsConnected { get; }
-        Task Run();
+        void Run();
         void Send(string response);
     }
 }

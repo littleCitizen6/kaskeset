@@ -23,10 +23,12 @@ namespace Kaskeset.Client
         public void Send(Request request)
         {
             byte[] DataBytes;
-            MemoryStream ms = new MemoryStream();
-            BinaryFormatter bf1 = new BinaryFormatter();
-            bf1.Serialize(ms, request);
-            DataBytes = ms.ToArray();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter bf1 = new BinaryFormatter();
+                bf1.Serialize(ms, request);
+                DataBytes = ms.ToArray();
+            }
             _client.GetStream().Write(DataBytes, 0, DataBytes.Length);
         }
 
