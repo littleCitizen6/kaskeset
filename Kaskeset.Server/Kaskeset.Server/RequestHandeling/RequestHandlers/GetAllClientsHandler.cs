@@ -10,11 +10,9 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlers
 {
     public class GetAllClientsHandler : IRequestHandler
     {
-        private object _locker;
         private IStateInfo _stateInfo;
         public GetAllClientsHandler(IStateInfo stateInfo)
         {
-            _locker = new object();
             _stateInfo = stateInfo;
         }
         public void Handle(Request request)

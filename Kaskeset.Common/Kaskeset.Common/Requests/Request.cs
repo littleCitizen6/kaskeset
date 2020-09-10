@@ -10,7 +10,8 @@ namespace Kaskeset.Common.Requests
         ChatConnection,
         UpdateName,
         CreateChat,
-        GetAllClients
+        GetAllClients,
+        GetRelatedChatGroups
     }
     [Serializable()]
     public class Request
