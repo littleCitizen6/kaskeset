@@ -59,5 +59,12 @@ namespace Kaskeset.Client
             allClientsInfo.LoadFromDictionary(_tcpServer.ReciveRequest().Properties);
             return allClientsInfo.Clients;
         }
+        public List<string> GetRealatedChats()
+        {
+            _tcpServer.Send(_factory.CreateGetRealatedChatGroupsRequest());
+            ResponseRelatedChatGroups relatedChatGroups = new ResponseRelatedChatGroups();
+            relatedChatGroups.LoadFromDictionary(_tcpServer.ReciveRequest().Properties);
+            return relatedChatGroups.Chats;
+        }
     }
 }

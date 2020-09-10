@@ -29,6 +29,11 @@ namespace Kaskeset.Client
             return Server.GetAllClients();
         }
 
+        public List<string> GetRelatedChats()
+        {
+            return Server.GetRealatedChats();
+        }
+
         public string ChoosePrivateChat(string userKey)
         {
             Guid id = Guid.Parse(userKey);

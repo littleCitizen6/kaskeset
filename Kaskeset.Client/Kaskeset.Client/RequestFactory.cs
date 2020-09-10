@@ -50,5 +50,11 @@ namespace Kaskeset.Client
             getAllClientsInfo.ClientId = _info.ClientId;
             return new Request(RequestType.GetAllClients, getAllClientsInfo.ToDictionary());
         }
+        public Request CreateGetRealatedChatGroupsRequest()
+        {
+            GetRelatedChatGroupInfo getRelatedChatGroupInfo = new GetRelatedChatGroupInfo();
+            getRelatedChatGroupInfo.ClientId = _info.ClientId;
+            return new Request(RequestType.GetRelatedChatGroups, getRelatedChatGroupInfo.ToDictionary());
+        }
     }
 }
