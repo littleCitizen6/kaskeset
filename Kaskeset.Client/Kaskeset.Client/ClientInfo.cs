@@ -9,11 +9,13 @@ namespace Kaskeset.Client
     {
         public Guid ClientId { get; set; }
         public int GlobalChatId { get; set; }
-        public ConcurrentDictionary<Guid, int> PrivateChats { get; set; }
+        public Dictionary<Guid, int> PrivateChats { get; set; }
+        public Dictionary<int, string> GroupChats { get; set; }
         public ClientInfo()
         {
             GlobalChatId = 0;
-            PrivateChats = new ConcurrentDictionary<Guid, int>();
+            PrivateChats = new Dictionary<Guid, int>();
+            GroupChats = new Dictionary<int, string>();
         }
 
     }

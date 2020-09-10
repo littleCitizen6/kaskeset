@@ -1,6 +1,7 @@
 ﻿using Kaskeset.Client.MenuHandling;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,6 +46,20 @@ namespace Kaskeset.Client
             {
                 _info.PrivateChats.TryAdd(id,Server.CreateChat("private", new List<Guid> { id, _info.ClientId })); 
                 InsertChat(_info.PrivateChats[id], $"with {userKey}");
+            }
+            return "exit succesfully"; //because happend only when client exited from the chat
+        }
+        public string ChooseGroupChat(string userKey)
+        {
+            int id = int.Parse(userKey);
+            if (_info.GroupChats.ContainsKey(id))
+            {
+                InsertChat(id, _info.GroupChats[id]);
+            }
+            else
+            {
+                _info.GroupChats.TryAdd(id, GetRelatedChats().FirstOrDefault(chat => int.Parse(chat.Split("::")[1]) == id).Split("::")[0]); //chat format name::id
+                InsertChat(id, _info.GroupChats[id]);
             }
             return "exit succesfully"; //because happend only when client exited from the chat
         }
