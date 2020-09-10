@@ -43,6 +43,7 @@ namespace Kaskeset.Client
             List<string> clients = new List<string> { _info.ClientId.ToString()}; //add the chat creator to chat participent
             Dictionary<string, string> optionalClients = new Dictionary<string, string>();
             _controller.GetAllClients().ForEach(cl => optionalClients.Add(cl.Split("::")[1], cl.Split("::")[0]));
+            optionalClients.Add("next", "finish add clients");
             string input = _menuHandler.ChooseFromOption(optionalClients);
             while (input != "next") // create the clients for chat
             {
@@ -77,7 +78,7 @@ namespace Kaskeset.Client
         {
             var menuOptions = new List<Option<string>>();
             menuOptions.Add(new Option<string>("create", CreateChat, "create a new chat"));
-            menuOptions.Add(new Option<string>("select",_controller.ChooseGroupChat , "choose a group chat"));
+            menuOptions.Add(new Option<string>("select", GroupChatsMenu, "choose a group chat"));
             menuOptions.Add(new Option<string>("back", _menuHandler.GetPrevious, "previous menu"));
             return MenuHandler.CreateStringsMenu(menuOptions);
 

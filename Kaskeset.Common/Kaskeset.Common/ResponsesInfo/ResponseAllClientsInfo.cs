@@ -12,13 +12,28 @@ namespace Kaskeset.Common.ResponsesInfo
         public List<string> Clients { get; set; }
         public void LoadFromDictionary(Dictionary<string, string> properties)
         {
-            Clients = properties["Clients"].Split('|').ToList(); 
+            try
+            {
+                Clients = properties["Clients"].Split('|').ToList();
+            }
+            catch (Exception)
+            {
+                Clients = new List<string>();
+            }
         }
 
         public Dictionary<string, string> ToDictionary()
         {
             Dictionary<string, string> prop = new Dictionary<string, string>();
-            prop.Add("Clients", Clients.ToSeperateByVerticalString<string>());
+            try
+            {
+                prop.Add("Clients", Clients.ToSeperateByVerticalString<string>());
+            }
+            catch (Exception) // if there is no chats
+            {
+                prop.Add("Clients", "");
+            }
+            
             return prop;
         }
     }
