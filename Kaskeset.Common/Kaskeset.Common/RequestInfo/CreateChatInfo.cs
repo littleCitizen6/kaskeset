@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Kaskeset.Common.RequestInfo
 {
-    public class CreateChatInfo : IRequestInfo
+    public class CreateChatInfo : IClientRequestInfo
     {
         public List<Guid> ParticipentsId { get; set; }
         public Guid ClientId { get; set; }
@@ -19,7 +19,7 @@ namespace Kaskeset.Common.RequestInfo
         public void LoadFromDictionary(Dictionary<string, string> properties)
         {
             ClientId = Guid.Parse(properties["ClientId"]);
-            ParticipentsId = properties["Participents"].Split('|').ToList().ConvertListType<Guid>(); // check if good
+            ParticipentsId = properties["Participents"].Split('|').ToList().ConvertListToType<Guid>();
             Name = properties["Name"];
         }
 

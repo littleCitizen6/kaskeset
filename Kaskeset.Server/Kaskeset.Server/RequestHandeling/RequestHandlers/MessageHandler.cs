@@ -15,7 +15,14 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlers
         {
             MessageInfo message = new MessageInfo();
             message.LoadFromDictionary(request.Properties);
-            _stateInfo.Chats.ChatById[message.ChatId].Write(message.Value, _stateInfo.Pbx.Clients[message.ClientId]);
+            if (message.Value != "exit")
+            {
+                _stateInfo.Chats.ChatById[message.ChatId].Write(message.Value, _stateInfo.Pbx.Clients[message.ClientId]);
+            }
+            else
+            {
+                _stateInfo.Pbx.Clients[message.ClientId].Send(message.Value); // send back the client exit
+            }
         }
     }
 }

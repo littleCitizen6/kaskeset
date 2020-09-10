@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kaskeset.Common.Extensions;
+using System;
 
 namespace Kaskeset.Client
 {

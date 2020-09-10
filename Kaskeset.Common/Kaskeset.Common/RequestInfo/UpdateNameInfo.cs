@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kaskeset.Common.RequestInfo
 {
-    public class UpdateNameInfo : IRequestInfo
+    public class UpdateNameInfo : IClientRequestInfo
     {
         public Guid ClientId { get; set ; }
         public string Name { get; set; }

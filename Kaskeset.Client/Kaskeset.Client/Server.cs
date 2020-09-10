@@ -1,8 +1,11 @@
 ﻿using Kaskeset.Client.MenuHandling;
+using Kaskeset.Common.Extensions;
+using Kaskeset.Common.ResponsesInfo;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Kaskeset.Client
@@ -32,12 +35,17 @@ namespace Kaskeset.Client
         {
             _tcpServer.Send(_factory.CreateMessageRequest(msg, chatId));
         }
-        public Task DisplayMessagesAsync(IDisplayer displayer)
+        public void DisplayMessagesAsync(IDisplayer displayer, CancellationToken token)
         {
-            while(true)
+            Task.Run(()=>
             {
-                displayer.Display(_tcpServer.Recive());
-            }
+                string msg = _tcpServer.Recive();
+                while (msg != "exit") // if client want to disconnect
+                {
+                    displayer.Display(msg);
+                    msg = _tcpServer.Recive();
+                }
+            }, token);
         }
         public int CreateChat(string name, List<Guid> participentsId)
         {
@@ -47,13 +55,9 @@ namespace Kaskeset.Client
         public List<string> GetAllClients()
         {
             _tcpServer.Send(_factory.CreateGetAllClientsRequest());
-            List<string> clients = new List<string>();
-            int count = int.Parse(_tcpServer.Recive()); // send first the count
-            for (int i = 0; i < count; i++)
-            {
-                clients.Add(_tcpServer.Recive());
-            }
-            return clients;
+            ResponseAllClientsInfo allClientsInfo = new ResponseAllClientsInfo();
+            allClientsInfo.LoadFromDictionary(_tcpServer.ReciveRequest().Properties);
+            return allClientsInfo.Clients;
         }
     }
 }

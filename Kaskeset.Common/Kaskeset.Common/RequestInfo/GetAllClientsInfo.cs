@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kaskeset.Common.RequestInfo
 {
-    public class GetAllClientsInfo : IRequestInfo
+    public class GetAllClientsInfo : IClientRequestInfo
     {
         public Guid ClientId { get; set; }
 

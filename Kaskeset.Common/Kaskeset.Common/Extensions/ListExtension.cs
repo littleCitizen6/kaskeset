@@ -14,13 +14,19 @@ namespace Kaskeset.Common.Extensions
             builder.Remove(builder.Length - 1, 1);
             return builder.ToString();
         }
-
-        public static List<T> ConvertListType<T>(this List<string> list) 
+        public static List<string> ConvertListToStrings<T>(this List<T> list)
+        {
+            List<string> convertedList = new List<string>();
+            list.ForEach(item => convertedList.Add(item.ToString()));
+            return convertedList;
+        }
+        public static List<T> ConvertListToType<T>(this List<string> list) 
         {
             TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
             List<T> convertedList = new List<T>();
             list.ForEach(item => convertedList.Add((T) converter.ConvertFromString(item)));
             return convertedList;
         }
+
     }
 }

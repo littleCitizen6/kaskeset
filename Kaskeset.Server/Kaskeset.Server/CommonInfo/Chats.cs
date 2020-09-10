@@ -24,6 +24,13 @@ namespace Kaskeset.Server.CommonInfo
             ChatById.TryAdd(chat.Id, chat);
             return chat.Id;
         }
+        public int CreateChat(string name, List<IClientConnection> participents)
+        {
+            var chat = new Chat(name, _logger);
+            chat.Clients = participents;
+            ChatById.TryAdd(chat.Id, chat);
+            return chat.Id;
+        }
 
         public IEnumerable<Chat> GetChats(IClientConnection client)
         {

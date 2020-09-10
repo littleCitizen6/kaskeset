@@ -31,37 +31,35 @@ namespace Kaskeset.Client
 
         public string ChoosePrivateChat(string userKey)
         {
-            string[] clientInfo = userKey.Split("::"); //because server send in name::Id format
-            var name = clientInfo[0];
-            var id = Guid.Parse(clientInfo[1]); 
+            Guid id = Guid.Parse(userKey);
             if (_info.PrivateChats.ContainsKey(id))
             {
-                InsertChat(_info.PrivateChats[id], name);
+                InsertChat(_info.PrivateChats[id], $"with {userKey}");
             }
             else
             {
                 _info.PrivateChats.TryAdd(id,Server.CreateChat("private", new List<Guid> { id, _info.ClientId })); 
-                InsertChat(_info.PrivateChats[id], name);
+                InsertChat(_info.PrivateChats[id], $"with {userKey}");
             }
             return "exit succesfully"; //because happend only when client exited from the chat
         }
 
         private void InsertChat(int chatId, string representingName)
         {
-            _displayer.DisplayOnly($"welcome to {representingName} chat");
+            _displayer.DisplayOnly($"press exit to get back from chat : {representingName}");
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
             Server.ConnectChat(chatId, true);
-            Task.Run(() => Server.DisplayMessagesAsync(_displayer), token);
-            string msg = Console.ReadLine(); // change to param getter 
+            Server.DisplayMessagesAsync(_displayer, token);
+            string msg = Console.ReadLine();
             while (msg != "exit")
-            {
-                Server.SendMessage(msg, chatId);
-                msg = Console.ReadLine(); // change to param getter 
+            { 
+                Server.SendMessage(msg, chatId); 
+                msg = Console.ReadLine(); // change to param getter
             }
-            tokenSource.Cancel();
+            tokenSource.Cancel(); // more safe to cancell before sending exit
+            Server.SendMessage("exit", chatId);
             Server.ConnectChat(chatId, false);
         }
-
     }
 }

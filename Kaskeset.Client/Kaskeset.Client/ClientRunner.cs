@@ -36,7 +36,9 @@ namespace Kaskeset.Client
 
         public string MoveToClientsMenu(string userKey)
         {
-            return _menuHandler.MoveToDynamicMenu("private", _controller.GetAllClients(), _controller.ChoosePrivateChat);
+            Dictionary<string, string> optionDecriptor = new Dictionary<string, string>();
+            _controller.GetAllClients().ForEach(cl => optionDecriptor.Add(cl.Split("::")[1], cl.Split("::")[0]));
+            return _menuHandler.MoveToDynamicMenu("private", optionDecriptor, _controller.ChoosePrivateChat);
         }
         private void InitMenus()
         {

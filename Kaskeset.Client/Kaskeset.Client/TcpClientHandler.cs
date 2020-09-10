@@ -38,5 +38,16 @@ namespace Kaskeset.Client
             int bytesRec = _client.GetStream().Read(dataBytes, 0, _client.ReceiveBufferSize);
             return Encoding.ASCII.GetString(dataBytes, 0, bytesRec);
         }
+        public Request ReciveRequest()
+        {
+            byte[] dataBytes = new byte[_client.ReceiveBufferSize];
+            int bytesRec = _client.GetStream().Read(dataBytes, 0, _client.ReceiveBufferSize);
+            using (var memStream = new MemoryStream(dataBytes))
+            {
+                memStream.Position = 0;
+                var binForm = new BinaryFormatter();
+                return (Request)binForm.Deserialize(memStream);
+            }
+        }
     }
 }

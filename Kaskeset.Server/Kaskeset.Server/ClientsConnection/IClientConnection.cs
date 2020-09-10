@@ -1,4 +1,5 @@
-﻿using Kaskeset.Server.ClientInfo;
+﻿using Kaskeset.Common.Requests;
+using Kaskeset.Server.ClientInfo;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,5 +14,7 @@ namespace Kaskeset.Server.ClientsConnection
         bool IsConnected { get; }
         void Run();
         void Send(string response);
+        void Send(Request response);
+
     }
 }

@@ -7,6 +7,7 @@ using MenuBuilder.Providers;
 using MenuBuilder.Validators;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kaskeset.Client.MenuHandling
@@ -60,13 +61,14 @@ namespace Kaskeset.Client.MenuHandling
             Runner.Browser.Current = Runner.Menus[index];
             return "succeded";
         }
-        public string MoveToDynamicMenu(string index,List<string> options, Func<string, string> func)
+        public string MoveToDynamicMenu(string index,Dictionary<string,string> optionsDescriptor, Func<string, string> func)
         {
             if (!Runner.AddMenu(index, new StringMenu()))
             {
                 Runner.Menus[index] = new StringMenu();
             }
-            options.ForEach(option => Runner.Menus[index].AddAction(option, func, option));
+            optionsDescriptor.Keys.ToList().ForEach(option => Runner.Menus[index].AddAction(option, func, optionsDescriptor[option]));
+            Runner.Menus[index].AddAction("back", GetPrevious, "back to previous menu");
             return MoveToOtherMenu(index);
         }
 

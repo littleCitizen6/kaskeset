@@ -36,20 +36,22 @@ namespace Kaskeset.Server.CommonInfo
         }
         public void Write(string msg, IClientConnection client)
         {
-            _logger.LogInformation($"recived meesage, in chat {Id}, from client {client.Info.Id}, with value {msg}");
+            _logger.LogInformation($"recived meesage, in chat {this}, from client {client.Info}, with value {msg}");
             _onWrite -= client.Send;
             _onWrite?.Invoke(msg);
             _onWrite += client.Send;
         }
         public void Connect(IClientConnection client)
         {
-            _logger.LogInformation($"client has connected for {Name}::{Id} - {client.Info.Name}::{client.Info.Id}");
+            _logger.LogInformation($"client has connected for {this} - {client.Info}");
             _onWrite += client.Send;
+            Connected.Add(client);
         }
         public void Disconnect(IClientConnection client)
         {
-            _logger.LogInformation($"client has disconnected - {client.Info.Name}::{client.Info.Id}");
+            _logger.LogInformation($"client has disconnected - {client.Info}");
             _onWrite -= client.Send;
+            Connected.Remove(client);
         }
 
         public void AppendClient(IClientConnection client)

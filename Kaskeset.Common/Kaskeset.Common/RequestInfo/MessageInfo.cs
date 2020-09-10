@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kaskeset.Common.RequestInfo
 {
-    public class MessageInfo : IRequestInfo
+    public class MessageInfo : IClientRequestInfo
     {
 
         public int ChatId { get; set; }
