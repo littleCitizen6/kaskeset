@@ -28,7 +28,7 @@ namespace Kaskeset.Client
         {
             return Server.GetAllClients();
         }
-
+        // remove from controller
         public List<string> GetRelatedChats()
         {
             return Server.GetRealatedChats();

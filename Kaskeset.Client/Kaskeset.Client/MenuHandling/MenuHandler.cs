@@ -83,6 +83,18 @@ namespace Kaskeset.Client.MenuHandling
             Runner.Exit();
             return "goodbye";
         }
+        public string ChooseFromOption(Dictionary<string, string> optionDescriptor)
+        {
+            Presenter.DisplayOnly("choose one of the following options");
+            optionDescriptor.Keys.ToList().ForEach(option => Presenter.Display($"{option} for {optionDescriptor[option]}"));
+            string input = Provider.Get<string>();
+            while (!optionDescriptor.Keys.Contains(input))
+            {
+                Presenter.Display("invalid input... please insert one of the options");
+                input = Provider.Get<string>();
+            }
+            return input;
+        }
 
         public int GetInt(string message)
         {
@@ -109,5 +121,6 @@ namespace Kaskeset.Client.MenuHandling
             Presenter.Display(message);
             return Provider.Get<string>();
         }
+
     }
 }

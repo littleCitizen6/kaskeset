@@ -1,4 +1,5 @@
 ﻿using Kaskeset.Client.MenuHandling;
+using Kaskeset.Common.Extensions;
 using MenuBuilder.Abstraction;
 using MenuBuilder.Menus;
 using System;
@@ -33,8 +34,24 @@ namespace Kaskeset.Client
             _controller.Server.UpdateName(name);
             
         }
+        public string CreateChat(string userKey)
+        {
+            var name = _menuHandler.GetString("please insert chat name");
+            List<string> clients = new List<string>();
+            Dictionary<string, string> optionalClients = new Dictionary<string, string>();
+            _controller.GetAllClients().ForEach(cl => optionalClients.Add(cl.Split("::")[1], cl.Split("::")[0]));
+            string input = _menuHandler.ChooseFromOption(optionalClients);
+            while (input != "next") // create the clients for chat
+            {
+                clients.Add(input);
+                optionalClients.Remove(input);
+                input = _menuHandler.ChooseFromOption(optionalClients);
+            }
+            _controller.Server.CreateChat(name, clients.ConvertListToType<Guid>());
+            return "created succesfully";
+        }
 
-        public string MoveToClientsMenu(string userKey)
+        public string PrivateChatMenu(string userKey)
         {
             Dictionary<string, string> optionDecriptor = new Dictionary<string, string>();
             _controller.GetAllClients().ForEach(cl => optionDecriptor.Add(cl.Split("::")[1], cl.Split("::")[0]));
@@ -49,7 +66,7 @@ namespace Kaskeset.Client
         {
             var mainActions = new List<Option<string>>();
             mainActions.Add(new Option<string>("global", _controller.InsertGlobalChat, "for global chat"));
-            mainActions.Add(new Option<string>("private", MoveToClientsMenu, "for choose a private chat"));
+            mainActions.Add(new Option<string>("private", PrivateChatMenu, "for choose a private chat"));
             //mainActions.Add(new Option<int>(2, _controller.GetCurrentAuctions, "for look at the auction that preforming right now"));
 
             return mainActions;
