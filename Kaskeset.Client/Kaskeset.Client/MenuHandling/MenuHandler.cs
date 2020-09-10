@@ -116,10 +116,29 @@ namespace Kaskeset.Client.MenuHandling
             } while (!converted);
             return num;
         }
-        public string GetString(string message)
+        public string GetValidatedString(string message, List<string> cantContain = default)
         {
             Presenter.Display(message);
-            return Provider.Get<string>();
+            var input = Provider.Get<string>();
+            if (cantContain == default)
+            {
+                while (input == "")
+                {
+                    input = Provider.Get<string>();
+                }
+            }
+            else
+            {
+                while (input == "" || cantContain.Where(str => input.Contains(str)).Count() > 0)
+                {
+                    if (cantContain.Where(str => input.Contains(str)).Count() > 0)
+                    {
+                        Presenter.Display("invalid input - have chars that cant contain");
+                    }
+                    input = Provider.Get<string>();
+                }
+            }
+            return input;
         }
 
     }

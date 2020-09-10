@@ -27,10 +27,7 @@ namespace Kaskeset.Common.ResponsesInfo
             {
                 prop.Add("Chats", Chats.ToSeperateByVerticalString<string>());
             }
-            catch(Exception) // if there is no chats
-            {
-                prop.Add("Chats", "");
-            }
+            catch (Exception) { } // if there is no chats then it will go to the eception handle in LoadFromDictionary
             return prop;
         }
     }

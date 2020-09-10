@@ -1,10 +1,8 @@
 ﻿using Kaskeset.Client.MenuHandling;
 using Kaskeset.Common.Extensions;
 using MenuBuilder.Abstraction;
-using MenuBuilder.Menus;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Kaskeset.Client
 {
@@ -14,7 +12,6 @@ namespace Kaskeset.Client
         private ClientController _controller;
         private MenuHandler _menuHandler;
         private IMenu _headMenu;
-        private IMenu _groupMenu;
 
         public ClientRunner(string adress, int port)
         {
@@ -33,13 +30,13 @@ namespace Kaskeset.Client
 
         private void GetClientName()
         {
-            string name = _menuHandler.GetString("insert your name");
+            string name = _menuHandler.GetValidatedString("insert your name", new List<string> { "::"});
             _controller.Server.UpdateName(name);
             
         }
         public string CreateChat(string userKey)
         {
-            var name = _menuHandler.GetString("please insert chat name");
+            var name = _menuHandler.GetValidatedString("please insert chat name", new List<string> { "::" });
             List<string> clients = new List<string> { _info.ClientId.ToString()}; //add the chat creator to chat participent
             Dictionary<string, string> optionalClients = new Dictionary<string, string>();
             _controller.GetAllClients().ForEach(cl => optionalClients.Add(cl.Split("::")[1], cl.Split("::")[0]));
@@ -64,8 +61,14 @@ namespace Kaskeset.Client
         public string GroupChatsMenu(string userKey)
         {
             Dictionary<string, string> optionDecriptor = new Dictionary<string, string>();
-            _controller.GetRelatedChats().ForEach(chat => optionDecriptor.Add(chat.Split("::")[1], chat.Split("::")[0]));
-            return _menuHandler.MoveToDynamicMenu("groupChats", optionDecriptor, _controller.ChoosePrivateChat);
+            var relatedChat = _controller.GetRelatedChats();
+            if (relatedChat.Count ==0)
+            {
+                return "you are have no group chats...";
+            }
+           relatedChat.ForEach(chat => optionDecriptor.Add(chat.Split("::")[1], chat.Split("::")[0]));
+           _menuHandler.MoveToDynamicMenu("groupChats", optionDecriptor, _controller.ChooseGroupChat);
+            return "inserting";
         }
 
         private void InitMenus()
