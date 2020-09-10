@@ -69,7 +69,7 @@ namespace Kaskeset.Client
             _displayer.DisplayOnly($"press exit to get back from chat : {representingName}");
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Server.ConnectChat(chatId, true);
+            Server.ConnectChat(chatId).ForEach(msg => _displayer.Display(msg));
             Server.DisplayMessagesAsync(_displayer, token);
             string msg = Console.ReadLine();
             while (msg != "exit")
@@ -79,7 +79,7 @@ namespace Kaskeset.Client
             }
             tokenSource.Cancel(); // more safe to cancell before sending exit
             Server.SendMessage("exit", chatId);
-            Server.ConnectChat(chatId, false);
+            Server.DisConnectChat(chatId);
         }
     }
 }

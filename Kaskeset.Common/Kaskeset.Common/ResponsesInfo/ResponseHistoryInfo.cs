@@ -1,5 +1,4 @@
 ﻿using Kaskeset.Common.Extensions;
-using Kaskeset.Common.RequestInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,18 +6,18 @@ using System.Text;
 
 namespace Kaskeset.Common.ResponsesInfo
 {
-    public class ResponseAllClientsInfo : IResponseInfo
+    public class ResponseHistoryInfo : IResponseInfo
     {
-        public List<string> Clients { get; set; }
+        public List<string> Messages { get; set; }
         public void LoadFromDictionary(Dictionary<string, string> properties)
         {
             try
             {
-                Clients = properties["Clients"].Split('|').ToList();
+                Messages = properties["Messages"].Split('|').ToList();
             }
             catch (Exception)
             {
-                Clients = new List<string>();
+                Messages = new List<string>();
             }
         }
 
@@ -27,9 +26,9 @@ namespace Kaskeset.Common.ResponsesInfo
             Dictionary<string, string> prop = new Dictionary<string, string>();
             try
             {
-                prop.Add("Clients", Clients.ToSeperateByVerticalString<string>());
+                prop.Add("Messages", Messages.ToSeperateByVerticalString<string>());
             }
-            catch (Exception) { } // if there is no chats then it will go to the eception handle in LoadFromDictionary
+            catch (Exception) { } // if there is no chats then it will go to the exception handle in LoadFromDictionary
             return prop;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Kaskeset.Common.RequestInfo;
+using Kaskeset.Common.ResponsesInfo;
 using Kaskeset.Common.Requests;
 using Kaskeset.Server.CommonInfo;
 
@@ -19,6 +20,9 @@ namespace Kaskeset.Server.RequestHandeling.RequestHandlers
 
             if (requestInfo.ToConnect)
             {
+                ResponseHistoryInfo historyInfo = new ResponseHistoryInfo();
+                historyInfo.Messages = _stateInfo.Chats.ChatById[requestInfo.ChatId].History;
+                _stateInfo.Pbx.Clients[requestInfo.ClientId].Send(new Request(RequestType.TextMessage, historyInfo.ToDictionary()));
                 _stateInfo.Chats.ChatById[requestInfo.ChatId]
                     .Connect(_stateInfo.Pbx.Clients[requestInfo.ClientId]);
             }

@@ -1,10 +1,7 @@
 ﻿using Kaskeset.Client.MenuHandling;
-using Kaskeset.Common.Extensions;
 using Kaskeset.Common.ResponsesInfo;
 using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,9 +24,18 @@ namespace Kaskeset.Client
             _tcpServer.Send(_factory.CreateUpdateNameRequest(name));
         }
 
-        public void ConnectChat(int chatId, bool toConnect)
+        public List<string> ConnectChat(int chatId)
         {
-            _tcpServer.Send(_factory.CreateChatConnectionRequest(chatId, toConnect));
+            _tcpServer.Send(_factory.CreateChatConnectionRequest(chatId, true));
+            ResponseHistoryInfo historyInfo = new ResponseHistoryInfo();
+            var historyResponse = _tcpServer.ReciveRequest();
+            historyInfo.LoadFromDictionary(historyResponse.Properties);
+            return historyInfo.Messages;
+
+        }
+        public void DisConnectChat(int chatId)
+        {
+            _tcpServer.Send(_factory.CreateChatConnectionRequest(chatId, false));
         }
         public void SendMessage(string msg, int chatId)
         {
